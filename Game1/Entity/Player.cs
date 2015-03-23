@@ -20,15 +20,34 @@ namespace Game1
 		private List<Gun> guns;
 		private Gun equipped;
 
-		public Player(Sprite spr, List<Gun> guns) : base(spr)
+		public Player(Sprite spr, List<Gun> guns, DelayedList<Entity> tCl) : base(spr, tCl)
 		{
-			Sprite.Origin = Sprite.Relative(new Vector2(0.5f, 0.6f), Sprite.Texture); //center origin
+			Sprite.Origin = Sprite.Relative(
+				new Vector2(0.5f, 0.6f),
+				Sprite.Texture
+			);
+
 			speed = 3;
 
 			this.guns = guns;
-			equipped = guns[0];
+			if (guns.Count > 0)
+				equipped = guns[0];
 
 			lastFrame = Keyboard.GetState(); //we don't want this to be null
+
+			Collide += (source, e) => {
+				var gun = e.Other as Gun;
+				if (gun != null) {
+					gun.Held = true;
+					guns.Add(gun);
+					if (equipped == null)
+						equipped = gun;
+					// this ""singleton"" will have to do until I integrate gamestates
+					// and yes I am just using "singleton" as a word for a global variable
+					// because it makes me feel better about myself
+					Program.Game.world.Remove(e.Other);
+				}
+			};
 		}
 
 		public override void Update() 
@@ -60,14 +79,16 @@ namespace Game1
 			}
 
 			MouseState ms = Mouse.GetState();
+			if (equipped != null) {
+				if (ms.LeftButton == ButtonState.Pressed) {
+					if (equipped.Ready)
+						equipped.Fire();
+				}
 
-			if (ms.LeftButton == ButtonState.Pressed) {
-				if (equipped.Ready)
-					equipped.Fire();
+				equipped.Sprite.Position = Sprite.Position;
+				equipped.Update();
 			}
 
-			equipped.Sprite.Position = Sprite.Position;
-			equipped.Update();
 
 			lastFrame = thisFrame;
 		}
@@ -92,7 +113,8 @@ namespace Game1
 
 		public override void Draw(SpriteBatch sb) {
 			base.Draw(sb);
-			equipped.Draw(sb);
+			if (equipped != null)
+				equipped.Draw(sb);
 		}
 	}
 }

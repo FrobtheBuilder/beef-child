@@ -8,7 +8,7 @@ namespace Game1
 	public class Rifle : Gun
 	{
 
-		public Rifle(Sprite spr, List<Bullet> bullets, Texture2D bulletTex) : base(spr, bullets, bulletTex)
+		public Rifle(Sprite spr, List<Entity> bullets) : base(spr, bullets)
 		{
 			// uhhh
 		}

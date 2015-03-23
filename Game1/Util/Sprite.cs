@@ -8,8 +8,15 @@ namespace Game1
 	{
 		public static Vector2 Relative(Vector2 vec, Texture2D tex)
 		{
-			Vector2 vec2 = Vector2.Multiply(vec, (new Vector2((float)tex.Width, (float)tex.Height)));
-			vec2 = new Vector2((float)Math.Round(vec2.X), (float)Math.Round(vec2.Y)); //keep things pixel-perfect
+			Vector2 vec2 = Vector2.Multiply(
+				vec,
+				new Vector2((float)tex.Width, (float)tex.Height)
+			);
+			
+			vec2 = new Vector2(
+				(float)Math.Round(vec2.X),
+				(float)Math.Round(vec2.Y)
+			);
 			return vec2;
 		}
 
@@ -49,10 +56,10 @@ namespace Game1
 			set { rotation = value; }
 		}
 
-		private bool flipped;
-		public bool Flipped {
-			get { return flipped; }
-			set { flipped = value; }
+		private SpriteEffects effect;
+		public SpriteEffects Effect {
+			get { return effect; }
+			set { effect = value; }
 		}
 
 		public Sprite() {
@@ -62,9 +69,9 @@ namespace Game1
 			rotation = 0.0f;
 		}
 
-		public Sprite(Texture2D tex)
+		public Sprite(Texture2D t)
 		{
-			this.texture = tex;
+			this.texture = t;
 			position = new Vector2(0, 0);
 			origin = new Vector2(0, 0);
 			rotation = 0.0f;
@@ -72,29 +79,17 @@ namespace Game1
 		}
 
 		public void Draw(SpriteBatch sb) {
-			if (!flipped)
-				sb.Draw(
-					texture,
-					position,
-					null,
-					null,
-					origin,
-					rotation,
-					null,
-					color
-				);
-			else
-				sb.Draw(
-					texture,
-					position,
-					null,
-					null,
-					origin,
-					rotation,
-					null,
-					color,
-					SpriteEffects.FlipVertically
-				);
+			sb.Draw(
+				Texture,
+				position,
+				null,
+				null,
+				Origin,
+				Rotation,
+				null,
+				this.Color,
+				Effect
+			);
 		}
 	}
 }

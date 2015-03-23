@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace Game1
 {
@@ -9,7 +10,8 @@ namespace Game1
 		private float angle;
 		private Random gen;
 
-		public BrownianEnemy(Sprite spr, Rectangle b) : base(spr, Color.BurlyWood, b)
+		public BrownianEnemy(Sprite spr, Rectangle b, DelayedList<Entity> cW)
+			: base(spr, Color.BurlyWood, b, cW)
 		{
 			angle = 0;
 			gen = new Random();

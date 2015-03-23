@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace Game1
 {
@@ -10,7 +11,8 @@ namespace Game1
 		private float angle;
 		private Random gen;
 		private Entity following;
-		public LazyFollowingEnemy(Sprite spr, Rectangle b, Entity e) : base(spr, Color.AliceBlue, b)
+		public LazyFollowingEnemy(Sprite spr, Rectangle b, Entity e, DelayedList<Entity> cW)
+			: base(spr, Color.AliceBlue, b, cW)
 		{
 			gen = new Random();
 			following = e;
@@ -18,7 +20,10 @@ namespace Game1
 		}
 
 		public override void Move() {
-			angle = (float)Math.Atan2(Sprite.Position.Y - following.Sprite.Position.Y, Sprite.Position.X - following.Sprite.Position.X);
+			angle = (float)Math.Atan2(
+				Sprite.Position.Y - following.Sprite.Position.Y,
+				Sprite.Position.X - following.Sprite.Position.X
+			);
 
 			if (gen.Next(0, 50) >= 45) {
 				move = true;

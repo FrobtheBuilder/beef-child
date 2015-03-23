@@ -38,7 +38,6 @@
   <ItemGroup>
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Sprite.cs" />
     <Compile Include="Entity\Entity.cs" />
     <Compile Include="Entity\Player.cs" />
     <Compile Include="Entity\Gun\Gun.cs" />
@@ -50,12 +49,19 @@
     <Compile Include="Entity\Enemy\BrownianEnemy.cs" />
     <Compile Include="Entity\Enemy\LazyFollowingEnemy.cs" />
     <Compile Include="Entity\Enemy\CrazyEnemy.cs" />
+    <Compile Include="Util\ISBDrawable.cs" />
+    <Compile Include="Util\Debug.cs" />
+    <Compile Include="Util\Sprite.cs" />
+    <Compile Include="Util\ContentBin.cs" />
+    <Compile Include="Util\FrameTimer.cs" />
+    <Compile Include="Util\DelayedList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
     <Folder Include="Entity\" />
     <Folder Include="Entity\Gun\" />
     <Folder Include="Entity\Enemy\" />
+    <Folder Include="Util\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\gun.png">

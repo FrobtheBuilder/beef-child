@@ -1,15 +1,39 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Game1
 {
 	public abstract class Enemy : Entity
 	{
 		private Rectangle bounds;
-		protected Enemy(Sprite spr, Color c, Rectangle b) : base(spr)
+
+		private int health;
+		public int Health {
+			get {
+				return health;
+			}
+			set {
+				health = value;
+			}
+		}
+
+		protected Enemy(Sprite spr, Color c, Rectangle b, DelayedList<Entity> cW) : base(spr, cW)
 		{
 			Sprite.Color = c;
 			bounds = b;
+			health = 5;
+
+			Collide += (source, e) => {
+				if (e.Other is Bullet) {
+					CollidesWith.Remove(e.Other);
+					health -= 1;
+					if (health <= 0) {
+						CollidesWith.Remove(this);
+					}
+				}
+			};
 		}
 
 		public override void Update()

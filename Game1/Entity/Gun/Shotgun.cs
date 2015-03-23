@@ -9,7 +9,7 @@ namespace Game1
 	public class Shotgun : Gun
 	{
 		private Random gen;
-		public Shotgun(Sprite spr, List<Bullet> bullets, Texture2D bulletTex) : base(spr, bullets, bulletTex)
+		public Shotgun(Sprite spr, List<Entity> bullets) : base(spr, bullets)
 		{
 			gen = new Random();
 		}
