@@ -14,11 +14,13 @@ namespace Game1
 		Random gen;
 
 		Player ply;
+
 		List<Enemy> enemies;
 		List<Gun> arsenal;
 
 		public DelayedList<Entity> world;
 		Sprite crosshair;
+		SpriteFont font;
 
 		public Game1()
 		{
@@ -31,6 +33,7 @@ namespace Game1
 		protected override void Initialize()
 		{
 			base.Initialize();
+			font = Content.Load<SpriteFont>("Arial");
 			IsFixedTimeStep = true; //don't want to worry about timing.
 			graphics.PreferMultiSampling = false;
 
@@ -48,19 +51,19 @@ namespace Game1
 
 
 			arsenal = new List<Gun>();
-			world.Add(
+			world.ImmediateAdd(
 				new Rifle(
 					new Sprite(Content.Load<Texture2D>("gun")),
 					world
 				)
 			);
-			world.Add(
+			world.ImmediateAdd(
 				new AssaultRifle(
 					new Sprite(Content.Load<Texture2D>("ar")),
 					world
 				)
 			);
-			world.Add(
+			world.ImmediateAdd(
 				new Shotgun(
 					new Sprite(Content.Load<Texture2D>("shotgun")),
 					world
@@ -69,39 +72,47 @@ namespace Game1
 
 			enemies = new List<Enemy>();
 
-			enemies.Add(
-				new BrownianEnemy(
-					new Sprite(enemyTex),
-					GraphicsDevice.Viewport.Bounds,
-					world
-				)
-			);
-
 			ply = new Player(
 				new Sprite(Content.Load<Texture2D>("player")),
 				arsenal,
 				world
 			);
+			for (int i = 0; i < 10; i++) {
+				enemies.Add(
+					new BrownianEnemy(
+						new Sprite(enemyTex),
+						GraphicsDevice.Viewport.Bounds,
+						world,
+						ply
+					)
+				);
+			}
 
-			enemies.Add(
-				new LazyFollowingEnemy(
-					new Sprite(enemyTex),
-					GraphicsDevice.Viewport.Bounds,
-					ply,
-					world
-				)
-			);
+			for (int i = 0; i < 3; i++) {
+				enemies.Add(
+					new LazyFollowingEnemy(
+						new Sprite(enemyTex),
+						GraphicsDevice.Viewport.Bounds,
+						ply,
+						world,
+						ply
+					)
+				);
+			}
 
-			enemies.Add(
-				new CrazyEnemy(
-					new Sprite(enemyTex),
-					GraphicsDevice.Viewport.Bounds,
-					world
-				)
-			);
+			for (int i = 0; i < 12; i++) {
+				enemies.Add(
+					new CrazyEnemy(
+						new Sprite(enemyTex),
+						GraphicsDevice.Viewport.Bounds,
+						world,
+						ply
+					)
+				);
+			}
 
 			foreach (Enemy e in enemies) {
-				world.Add(e);
+				world.ImmediateAdd(e);
 			}
 
 			foreach (Entity e in world) {
@@ -150,6 +161,8 @@ namespace Game1
 			foreach (Entity e in world)
 				e.Update();
 			world.ApplyRemovals();
+			world.ApplyAdditions();
+			// this is disgusting.
 		}
 
 		/// <summary>
@@ -171,9 +184,10 @@ namespace Game1
 			foreach (Entity e in world)
 				e.Draw(spriteBatch);
 
+
 			ply.Draw(spriteBatch);
 			crosshair.Draw(spriteBatch);
-
+			spriteBatch.DrawString(font, ply.Health.ToString(), new Vector2(5, 5), Color.White);
 			spriteBatch.End();
 
 			base.Draw(gameTime);

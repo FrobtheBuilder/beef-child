@@ -11,8 +11,8 @@ namespace Game1
 		private float angle;
 		private Random gen;
 		private Entity following;
-		public LazyFollowingEnemy(Sprite spr, Rectangle b, Entity e, DelayedList<Entity> cW)
-			: base(spr, Color.AliceBlue, b, cW)
+		public LazyFollowingEnemy(Sprite spr, Rectangle b, Entity e, DelayedList<Entity> cW, Entity tgt)
+			: base(spr, Color.AliceBlue, b, cW, tgt)
 		{
 			gen = new Random();
 			following = e;
@@ -29,7 +29,7 @@ namespace Game1
 				move = true;
 			}
 
-			if (move) {
+			if (move && !attacking) {
 				Velocity = 5 * Vector2.Normalize(new Vector2(
 					-(float)Math.Cos(angle), -(float)Math.Sin(angle)
 				));
@@ -37,6 +37,14 @@ namespace Game1
 			}
 
 			Velocity *= new Vector2(0.9f, 0.9f); //slow down
+		}
+
+		public override void Attack(float angle) 
+		{
+			Velocity = 30 * Vector2.Normalize(new Vector2(
+				-(float)Math.Cos(angle), -(float)Math.Sin(angle)
+			));
+			// GO IN FOR THE KILL
 		}
 	}
 }

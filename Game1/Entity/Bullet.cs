@@ -7,6 +7,16 @@ namespace Game1
 	public class Bullet : Entity
 	{
 		private float hitBoxCorner;
+		private bool unfriendly;
+		public bool Unfriendly {
+			get {
+				return unfriendly;
+			}
+			set {
+				unfriendly = value;
+			}
+		}
+
 		public Bullet(Sprite spr) : base(spr)
 		{
 			hitBoxCorner = Sprite.Relative(new Vector2(0.6f, 0.0f), Sprite.Texture).X;

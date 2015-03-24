@@ -23,7 +23,7 @@ namespace Game1
 			using (var game = new Game1()) {
 				Game = game;
 				// uhh, call it a singleton.
-				DEBUG = true;
+				DEBUG = false;
 				game.Run();
 			}
 		}

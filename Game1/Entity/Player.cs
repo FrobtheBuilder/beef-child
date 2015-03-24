@@ -16,6 +16,25 @@ namespace Game1
 			get { return speed; }
 			set { speed = value; }
 		}
+		private int health;
+		public int Health {
+			get {
+				return health;
+			}
+			set {
+				health = value;
+			}
+		}
+
+		private bool dead;
+		public bool Dead {
+			get {
+				return dead;
+			}
+			set {
+				dead = value;
+			}
+		}
 
 		private List<Gun> guns;
 		private Gun equipped;
@@ -28,7 +47,8 @@ namespace Game1
 			);
 
 			speed = 3;
-
+			health = 20;
+			dead = false;
 			this.guns = guns;
 			if (guns.Count > 0)
 				equipped = guns[0];
@@ -47,50 +67,63 @@ namespace Game1
 					// because it makes me feel better about myself
 					Program.Game.world.Remove(e.Other);
 				}
+				if (e.Other is Enemy || 
+						(e.Other is Bullet && ((Bullet)e.Other).Unfriendly)) {
+					health -= 1;
+					if (Program.DEBUG)
+						Console.WriteLine("Hit");
+					if (health <= 0) {
+						dead = true;
+					}
+					if (e.Other is Bullet && ((Bullet)e.Other).Unfriendly) {
+						Program.Game.world.Remove(e.Other);
+					}
+				}
 			};
 		}
 
 		public override void Update() 
 		{
-			base.Update();
+			if (!dead) {
+				base.Update();
 
-			Velocity *= new Vector2(0.5f, 0.5f); //"friction"
-			KeyboardState thisFrame = Keyboard.GetState();
+				Velocity *= new Vector2(0.5f, 0.5f); //"friction"
+				KeyboardState thisFrame = Keyboard.GetState();
 
-			if (thisFrame.IsKeyDown(Keys.W)) {
-				Velocity += new Vector2(0, -speed);
-			}
-			if (thisFrame.IsKeyDown(Keys.S)) {
-				Velocity += new Vector2(0, speed);
-			}
-			if (thisFrame.IsKeyDown(Keys.A)) {
-				Velocity += new Vector2(-speed, 0);
-			}
-			if (thisFrame.IsKeyDown(Keys.D)) {
-				Velocity += new Vector2(speed, 0);
-			}
-
-			// ghetto implementation of the key pressed event
-			if (thisFrame.IsKeyDown(Keys.Q) && !lastFrame.IsKeyDown(Keys.Q)) {
-				PrevGun();
-			}
-			else if (thisFrame.IsKeyDown(Keys.E) && !lastFrame.IsKeyDown(Keys.E)) {
-				NextGun();
-			}
-
-			MouseState ms = Mouse.GetState();
-			if (equipped != null) {
-				if (ms.LeftButton == ButtonState.Pressed) {
-					if (equipped.Ready)
-						equipped.Fire();
+				if (thisFrame.IsKeyDown(Keys.W)) {
+					Velocity += new Vector2(0, -speed);
+				}
+				if (thisFrame.IsKeyDown(Keys.S)) {
+					Velocity += new Vector2(0, speed);
+				}
+				if (thisFrame.IsKeyDown(Keys.A)) {
+					Velocity += new Vector2(-speed, 0);
+				}
+				if (thisFrame.IsKeyDown(Keys.D)) {
+					Velocity += new Vector2(speed, 0);
 				}
 
-				equipped.Sprite.Position = Sprite.Position;
-				equipped.Update();
+				// ghetto implementation of the key pressed event
+				if (thisFrame.IsKeyDown(Keys.Q) && !lastFrame.IsKeyDown(Keys.Q)) {
+					PrevGun();
+				} else if (thisFrame.IsKeyDown(Keys.E) && !lastFrame.IsKeyDown(Keys.E)) {
+					NextGun();
+				}
+
+				MouseState ms = Mouse.GetState();
+				if (equipped != null) {
+					if (ms.LeftButton == ButtonState.Pressed) {
+						if (equipped.Ready)
+							equipped.Fire();
+					}
+
+					equipped.Sprite.Position = Sprite.Position;
+					equipped.Update();
+				}
+
+
+				lastFrame = thisFrame;
 			}
-
-
-			lastFrame = thisFrame;
 		}
 
 		public void NextGun() {
@@ -112,9 +145,11 @@ namespace Game1
 		}
 
 		public override void Draw(SpriteBatch sb) {
-			base.Draw(sb);
-			if (equipped != null)
-				equipped.Draw(sb);
+			if (!dead) {
+				base.Draw(sb);
+				if (equipped != null)
+					equipped.Draw(sb);
+			}
 		}
 	}
 }
