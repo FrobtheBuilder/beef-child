@@ -127,20 +127,23 @@ namespace Game1
 		}
 
 		public void NextGun() {
-			if (guns.IndexOf(equipped) < guns.Count-1) {
-				equipped = guns[guns.IndexOf(equipped) + 1];
-			}
-			else {
-				equipped = guns[0];
+			if (equipped != null) {
+				if (guns.IndexOf(equipped) < guns.Count - 1) {
+					equipped = guns[guns.IndexOf(equipped) + 1];
+				} else {
+					equipped = guns[0];
+				}
 			}
 		}
 
 		public void PrevGun() {
-			if (guns.IndexOf(equipped) > 0) {
-				equipped = guns[guns.IndexOf(equipped) - 1];
-			}
-			else {
-				equipped = guns[guns.Count - 1];
+			if (equipped != null) {
+				if (guns.IndexOf(equipped) > 0) {
+					equipped = guns[guns.IndexOf(equipped) - 1];
+				}
+				else {
+					equipped = guns[guns.Count - 1];
+				}
 			}
 		}
 
