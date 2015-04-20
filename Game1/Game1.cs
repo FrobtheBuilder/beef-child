@@ -49,8 +49,6 @@ namespace Game1
 				
 			world = new DelayedList<Entity>();
 
-
-			arsenal = new List<Gun>();
 			world.ImmediateAdd(
 				new Rifle(
 					new Sprite(Content.Load<Texture2D>("gun")),
@@ -72,6 +70,7 @@ namespace Game1
 
 			enemies = new List<Enemy>();
 
+			arsenal = new List<Gun>();
 			ply = new Player(
 				new Sprite(Content.Load<Texture2D>("player")),
 				arsenal,
