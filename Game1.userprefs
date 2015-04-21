@@ -2,17 +2,13 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Game1\Entity\Entity.cs">
     <Files>
-      <File FileName="Game1\Game1.cs" Line="150" Column="16" />
-      <File FileName="readme.md" Line="3" Column="58" />
-      <File FileName="Game1\Program.cs" Line="1" Column="1" />
-      <File FileName="Game1\Entity\Player.cs" Line="33" Column="3" />
-      <File FileName="Game1\Entity\Enemy\Enemy.cs" Line="14" Column="3" />
-      <File FileName="Game1\Sprite.cs" Line="19" Column="28" />
-      <File FileName="Game1\Entity\Gun\Gun.cs" Line="99" Column="2" />
-      <File FileName="Game1\FrameTimer.cs" Line="31" Column="22" />
-      <File FileName="Game1\Entity\Entity.cs" Line="114" Column="28" />
-      <File FileName="..\..\..\..\..\projects\KnyttX\KnyttX\Entity\Entity.cs" Line="67" Column="6" NotebookId="1" />
-      <File FileName="..\..\..\..\..\projects\KnyttX\KnyttX\Util\Sprite.cs" Line="21" Column="3" NotebookId="1" />
+      <File FileName="Game1\Game1.cs" Line="173" Column="26" />
+      <File FileName="Game1\Entity\Entity.cs" Line="130" Column="4" />
+      <File FileName="Game1\State\GameState.cs" Line="72" Column="53" />
+      <File FileName="Game1\State\TestState.cs" Line="27" Column="2" />
+      <File FileName="..\..\..\..\..\projects\KnyttX\KnyttX\State\TestState.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="..\..\..\..\..\projects\KnyttX\KnyttX\State\GameState.cs" Line="40" Column="4" NotebookId="1" />
+      <File FileName="..\Game1-SecondIteration\Game1\Game1.cs" Line="150" Column="16" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Game1
 {
@@ -17,10 +18,24 @@ namespace Game1
 
 		List<Enemy> enemies;
 		List<Gun> arsenal;
+		List<GameState> states;
+
+		private GameState currentState;
+		public GameState CurrentState {
+			get { return currentState; }
+			set {
+				currentState.CleanUp();
+				currentState = value;
+				currentState.Enabled = true;
+				currentState.Initialize();
+			}
+		}
 
 		public DelayedList<Entity> world;
 		Sprite crosshair;
 		SpriteFont font;
+
+
 
 		public Game1()
 		{
@@ -28,6 +43,9 @@ namespace Game1
 			Content.RootDirectory = "Content";
 
 			gen = new Random();
+
+			states = new List<GameState>();
+			currentState = states[0];
 		}
 
 		protected override void Initialize()
@@ -152,6 +170,7 @@ namespace Game1
 		protected override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
+			currentState.Update();
 			ply.Update();
 
 			MouseState ms = Mouse.GetState();

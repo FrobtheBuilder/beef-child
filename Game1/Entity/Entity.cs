@@ -15,6 +15,8 @@ namespace Game1
 
 	public class CollideEventArgs : EventArgs
 	{
+		
+
 		public Entity Other { get; set; }
 
 		public CollideEventArgs(Entity other)
@@ -26,7 +28,22 @@ namespace Game1
 	public delegate void CollisionHandler(object source, CollideEventArgs e);
 	public abstract class Entity : ISBDrawable
 	{
-		
+		private bool enabled;
+		public bool Enabled {
+			get {
+				return enabled;
+			}
+			set {
+				enabled = value;
+			}
+		}
+
+		private int collisionLayer;
+		public int CollisionLayer {
+			get { return collisionLayer; }
+			set { collisionLayer = value; }
+		}
+
 		public Rectangle PositionedHitBox {
 			get {
 				return new Rectangle(
@@ -67,6 +84,12 @@ namespace Game1
 			set { collidesWith = value; }
 		}
 
+		private GameState state;
+		public GameState State {
+			get { return state; }
+			set { state = value; }
+		}
+
 		protected List<Entity> collidingWith;
 		public event CollisionHandler Collide;
 		public event CollisionHandler StopCollide;
@@ -77,10 +100,11 @@ namespace Game1
 			hitBox = hbox;
 		}
 
-		protected Entity(Sprite spr, DelayedList<Entity> cw)
+		protected Entity(Sprite spr, GameState g)
 		{
+			CollisionLayer = 0;
+			enabled = false; //we will always set this when added to state
 			sprite = spr;
-			collidesWith = cw;
 			collidingWith = new List<Entity>();
 
 			//set the hitbox to the sprite texture bounds by default.
@@ -88,8 +112,9 @@ namespace Game1
 			//this way, by default, the hitbox will always just match the sprite.
 		}
 
-		protected Entity(Sprite spr) : this(spr, new DelayedList<Entity>())
-		{}
+		public virtual void Initialize() {
+			
+		}
 
 		public virtual void Update() {
 			
@@ -107,9 +132,11 @@ namespace Game1
 				collidingWith.Remove(e);
 			}
 
-			foreach (var e in CollidesWith) {
+			foreach (var e in state.Entities) {
 				if (PositionedHitBox.Intersects(e.PositionedHitBox)) {
-					if (!collidingWith.Contains(e) && e != this) {
+					
+					if (!collidingWith.Contains(e) && e != this 
+						&& e.CollisionLayer == this.CollisionLayer) {
 						if (Collide != null)
 							Collide(this, new CollideEventArgs(e));
 						collidingWith.Add(e);

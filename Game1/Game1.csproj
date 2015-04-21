@@ -55,6 +55,8 @@
     <Compile Include="Util\ContentBin.cs" />
     <Compile Include="Util\FrameTimer.cs" />
     <Compile Include="Util\DelayedList.cs" />
+    <Compile Include="State\GameState.cs" />
+    <Compile Include="State\TestState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
